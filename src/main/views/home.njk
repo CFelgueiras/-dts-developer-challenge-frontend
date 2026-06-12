@@ -1,121 +1,93 @@
-{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-
 {% extends "template.njk" %}
 
-<!-- You may want to make further use of these components: https://design-system.service.gov.uk/components/
-but ultimately it is up to you -->
-
 {% block content %}
-  <h1 class="govuk-heading-xl">Welcome to your dev test!</h1>
 
-  <!-- The freedom is yours. You can design the solution however you like, however there is a starting point provided
-  to ensure you have both services running. You may want to make use of the Gov UK Components:
-  https://design-system.service.gov.uk/components/ to add tabs and so forth :) -->
+<h1 class="govuk-heading-xl">
+  HMCTS Task Management
+</h1>
 
-  {% if example.id %}
+<a href="/tasks/create"
+   role="button"
+   draggable="false"
+   class="govuk-button"
+   data-module="govuk-button">
+  Create Task
+</a>
 
-    {{ govukSummaryList({
-      rows: [
-        {
-          key: {
-            text: "ID"
-          },
-          value: {
-            text: example.id
-          },
-          actions: {
-            items: [
-              {
-                href: "#",
-                text: "Change",
-                visuallyHiddenText: "change case id ?!"
-              }
-            ]
-          }
-        },
-        {
-          key: {
-            text: "Case Number"
-          },
-          value: {
-            text: example.caseNumber
-          },
-          actions: {
-            items: [
-              {
-                href: "#",
-                text: "Change",
-                visuallyHiddenText: "change case number"
-              }
-            ]
-          }
-        },
-        {
-          key: {
-            text: "Title"
-          },
-          value: {
-            html: example.title
-          },
-          actions: {
-            items: [
-              {
-                href: "#",
-                text: "Change",
-                visuallyHiddenText: "change case title"
-              }
-            ]
-          }
-        },
-        {
-          key: {
-            text: "Description"
-          },
-          value: {
-            html: example.description
-          },
-          actions: {
-            items: [
-               {
-                 href: "#",
-                 text: "Delete",
-                 visuallyHiddenText: "Delete description"
-               },
-               {
-                 href: "#",
-                 text: "Change",
-                 visuallyHiddenText: "Change description"
-               }
-            ]
-          }
-        },
-        {
-          key: {
-            text: "Status"
-          },
-          value: {
-            html: example.status
-          },
-          actions: {
-            items: [
-            ]
-          }
-        },
-        {
-          key: {
-           text: "Created Date"
-          },
-          value: {
-           html: example.createdDate
-          },
-          actions: {
-           items: [
-           ]
-          }
-        }
-      ]
-    }) }}
+{% if tasks.length > 0 %}
 
-  {% endif %}
+<table class="govuk-table">
+
+  <thead class="govuk-table__head">
+
+    <tr class="govuk-table__row">
+
+      <th class="govuk-table__header">
+        Title
+      </th>
+
+      <th class="govuk-table__header">
+        Status
+      </th>
+
+      <th class="govuk-table__header">
+        Due Date
+      </th>
+
+      <th class="govuk-table__header">
+        Actions
+      </th>
+
+    </tr>
+
+  </thead>
+
+  <tbody class="govuk-table__body">
+
+    {% for task in tasks %}
+
+    <tr class="govuk-table__row">
+
+      <td class="govuk-table__cell">
+        {{ task.title }}
+      </td>
+
+      <td class="govuk-table__cell">
+        {{ task.status }}
+      </td>
+
+      <td class="govuk-table__cell">
+        {{ task.dueDateTime }}
+      </td>
+
+      <td class="govuk-table__cell">
+
+        <a href="/tasks/{{ task.id }}/status">
+          Update Status
+        </a>
+
+        |
+
+        <a href="/tasks/{{ task.id }}/delete">
+          Delete
+        </a>
+
+      </td>
+
+    </tr>
+
+    {% endfor %}
+
+  </tbody>
+
+</table>
+
+{% else %}
+
+<p class="govuk-body">
+  No tasks found.
+</p>
+
+{% endif %}
 
 {% endblock %}
